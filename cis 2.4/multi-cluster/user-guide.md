@@ -15,25 +15,21 @@ In this user-guide, each cluster runs a full copy of the application. This simpl
 
 ## Create Vxlan tunnels and self-IPs for the cluster
 
-tmsh create net tunnels vxlan fl-vxlan port 8472 flooding-type none
-tmsh create net tunnel tunnel vxlan-tunnel-dev key 1 profile fl-vxlan local-address 192.168.200.60
-tmsh create net tunnel tunnel vxlan-tunnel-prod key 11 profile fl-vxlan local-address 192.168.200.60
-tmsh create net self 10.244.20.60 address 10.244.20.60/255.255.0.0 allow-service none vlan vxlan-tunnel-dev
-tmsh create net self 10.245.20.60 address 10.245.20.60/255.255.0.0 allow-service none vlan vxlan-tunnel-prod
+* tmsh create net tunnels vxlan fl-vxlan port 8472 flooding-type none
+* tmsh create net tunnel tunnel vxlan-tunnel-dev key 1 profile fl-vxlan local-address 192.168.200.60
+* tmsh create net tunnel tunnel vxlan-tunnel-prod key 11 profile fl-vxlan local-address 192.168.200.60
+* tmsh create net self 10.244.20.60 address 10.244.20.60/255.255.0.0 allow-service none vlan vxlan-tunnel-dev
+* tmsh create net self 10.245.20.60 address 10.245.20.60/255.255.0.0 allow-service none vlan vxlan-tunnel-prod
 
 ## Example of Vxlan tunnels and self-IPs for the cluster
 
-Tunnel profile fl-vxlan
-
-![fl-vxlan](https://github.com/mdditt2000/kubernetes-1-20/blob/main/cis%202.4/ha-cluster/diagrams/2021-04-13_10-08-15.png)
-
 Tunnel profile fl-vxlan configuration for vxlan-tunnel-dev and vxlan-tunnel-dev
 
-![vxlan-tunnel](https://github.com/mdditt2000/kubernetes-1-20/blob/main/cis%202.4/ha-cluster/diagrams/2021-04-13_10-10-04.png)
+![vxlan-tunnel](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/diagrams/2021-05-04_10-24-52.png)
 
 Self-IPs configuration for vxlan-tunnel-dev and vxlan-tunnel-dev
 
-![self-ip](https://github.com/mdditt2000/kubernetes-1-20/blob/main/cis%202.4/ha-cluster/diagrams/2021-04-13_10-10-04.png)
+![self-ip](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/diagrams/2021-05-04_10-30-14.png)
 
 
 Tunnel profile fl-vxlan configuration for vxlan-tunnel-dev
