@@ -21,7 +21,7 @@ In this user-guide, each cluster runs a full copy of the application. This simpl
 * tmsh create net self 10.244.20.60 address 10.244.20.60/255.255.0.0 allow-service none vlan vxlan-tunnel-dev
 * tmsh create net self 10.245.20.60 address 10.245.20.60/255.255.0.0 allow-service none vlan vxlan-tunnel-prod
 
-## Example of Vxlan tunnels and self-IPs for the cluster
+## Example of Vxlan tunnels and Self-IPs for the cluster
 
 Tunnel profile fl-vxlan configuration for vxlan-tunnel-dev and vxlan-tunnel-dev
 
@@ -31,8 +31,109 @@ Self-IPs configuration for vxlan-tunnel-dev and vxlan-tunnel-dev
 
 ![self-ip](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/diagrams/2021-05-04_10-30-14.png)
 
+## Create BIG-IP Node (vxlan)
 
-Tunnel profile fl-vxlan configuration for vxlan-tunnel-dev
+Find the VTEP MAC address for tunnels vxlan-tunnel-dev and vxlan-tunnel-prod.
+
+```
+(tmos)# show net tunnels tunnel vxlan-tunnel-dev all-properties
+
+-------------------------------------------------
+Net::Tunnel: vxlan-tunnel-dev
+-------------------------------------------------
+MAC Address                     00:50:56:bb:32:66
+Interface Name                    vxlan-tunnel-~1
+
+Incoming Discard Packets                        0
+Incoming Error Packets                          0
+Incoming Unknown Proto Packets                  0
+Outgoing Discard Packets                        0
+Outgoing Error Packets                         10
+HC Incoming Octets                              0
+HC Incoming Unicast Packets                     0
+HC Incoming Multicast Packets                   0
+HC Incoming Broadcast Packets                   0
+HC Outgoing Octets                              0
+HC Outgoing Unicast Packets                     0
+HC Outgoing Multicast Packets                   0
+HC Outgoing Broadcast Packets                   0
+
+```
+
+```
+tmos)# show net tunnels tunnel vxlan-tunnel-prod all-properties
+
+-------------------------------------------------
+Net::Tunnel: vxlan-tunnel-prod
+-------------------------------------------------
+MAC Address                     00:50:56:bb:32:66
+Interface Name                    vxlan-tunnel-~2
+
+Incoming Discard Packets                        0
+Incoming Error Packets                          0
+Incoming Unknown Proto Packets                  0
+Outgoing Discard Packets                        0
+Outgoing Error Packets                         10
+HC Incoming Octets                              0
+HC Incoming Unicast Packets                     0
+HC Incoming Multicast Packets                   0
+HC Incoming Broadcast Packets                   0
+HC Outgoing Octets                              0
+HC Outgoing Unicast Packets                     0
+HC Outgoing Multicast Packets                   0
+HC Outgoing Broadcast Packets                   0
+
+root@(big-ip-ve6-pme)(cfg-sync Standalone)(Active)(/Common)(tmos)#
+
+```
+
+## Create two “dummy” Kubernetes Node for each vxlan tunnel
+
+Include all of the flannel Annotations. Define the backend-data and public-ip Annotations with data from the BIG-IP VXLAN:
+
+```
+apiVersion: v1
+kind: Node
+metadata:
+  name: vxlan-tunnel-dev
+  annotations:
+    #Replace MAC with your BIGIP Flannel VXLAN Tunnel MAC
+    flannel.alpha.coreos.com/backend-data: '{"VtepMAC":"00:50:56:bb:32:66"}'
+    flannel.alpha.coreos.com/backend-type: "vxlan"
+    flannel.alpha.coreos.com/kube-subnet-manager: "true"
+    #Replace IP with Self-IP for your deployment
+    flannel.alpha.coreos.com/public-ip: "192.168.200.60"
+spec:
+  #Replace Subnet with your BIGIP Flannel Subnet
+  podCIDR: "10.244.20.0/24
+```
+
+```
+apiVersion: v1
+kind: Node
+metadata:
+  name: vxlan-tunnel-prod
+  annotations:
+    #Replace MAC with your BIGIP Flannel VXLAN Tunnel MAC
+    flannel.alpha.coreos.com/backend-data: '{"VtepMAC":"00:50:56:bb:32:66"}'
+    flannel.alpha.coreos.com/backend-type: "vxlan"
+    flannel.alpha.coreos.com/kube-subnet-manager: "true"
+    #Replace IP with Self-IP for your deployment
+    flannel.alpha.coreos.com/public-ip: "192.168.200.60"
+spec:
+  #Replace Subnet with your BIGIP Flannel Subnet
+  podCIDR: "10.245.20.0/24
+```
+
+**Note: Second node create a unique podCIDR**
+
+* f5-bigip-node-91.yaml [repo](https://github.com/mdditt2000/kubernetes-1-20/blob/main/cis%202.4/ha-cluster/big-ip-91/f5-bigip-node-91.yaml)
+* f5-bigip-node-92.yaml [repo](https://github.com/mdditt2000/kubernetes-1-20/blob/main/cis%202.4/ha-cluster/big-ip-92/f5-bigip-node-92.yaml)
+
+
+
+
+
 
 ## Deploy CIS for each BIG-IP
 
