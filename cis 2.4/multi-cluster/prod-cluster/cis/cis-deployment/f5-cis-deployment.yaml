@@ -30,7 +30,7 @@ spec:
           args: 
             - "--bigip-username=$(BIGIP_USERNAME)"
             - "--bigip-password=$(BIGIP_PASSWORD)"
-            - "--bigip-url=192.168.200.80"
+            - "--bigip-url=192.168.200.60"
             - "--bigip-partition=prod"
             - "--namespace=prod"
             - "--pool-member-type=cluster"
