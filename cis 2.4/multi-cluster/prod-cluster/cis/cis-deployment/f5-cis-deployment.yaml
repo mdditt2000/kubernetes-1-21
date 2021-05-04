@@ -34,7 +34,7 @@ spec:
             - "--bigip-partition=prod"
             - "--namespace=prod"
             - "--pool-member-type=cluster"
-            - "--flannel-name=fl-vxlan"
+            - "--flannel-name=vxlan-tunnel-prod"
             - "--log-level=DEBUG"
             - "--insecure=true"
             - "--log-as3-response=true"
