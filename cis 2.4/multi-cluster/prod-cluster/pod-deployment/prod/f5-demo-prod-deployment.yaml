@@ -4,6 +4,7 @@ metadata:
   labels:
     app: f5-demo-prod
   name: f5-demo-prod
+  namespace: prod
 spec:
   replicas: 2
   selector:

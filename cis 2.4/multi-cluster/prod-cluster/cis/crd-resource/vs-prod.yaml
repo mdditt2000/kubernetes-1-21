@@ -6,7 +6,7 @@ metadata:
   labels:
     f5cr: "true"
 spec:
-  host: dev.f5demo.com
+  host: prod.f5demo.com
   ipamLabel: prod
   pools:
   - monitor:
