@@ -34,7 +34,7 @@ spec:
             - "--bigip-partition=dev"
             - "--namespace=dev"
             - "--pool-member-type=cluster"
-            - "--flannel-name=vxlan-tunnel-dev"
+            - "--flannel-name=/dev/vxlan-tunnel-dev"
             - "--log-level=DEBUG"
             - "--insecure=true"
             - "--log-as3-response=true"
