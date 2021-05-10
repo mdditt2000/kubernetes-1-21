@@ -247,7 +247,7 @@ prod-cluster
 
 ## CIS Configuration Options using IPAM for the Dev and Prod Cluster
 
-CIS 2.4 introduces IPAM which provides IP management for the different clusters. Using CIS + IPAM will simplify the configuration of the CRD VirtualServer. The devops user only need to define a ipamlable in the CRD and IPAM will provide a public IP for the specific hostname. 
+CIS 2.4 introduces IPAM which provides IP management for the different clusters. Using CIS + IPAM will simplify the configuration of the CRD VirtualServer. The devops user only need to define a ipamlabel in the CRD and IPAM will provide a public IP for the specific hostname. 
 
 * Defining the ip-range for the **dev network** and **dev ipamlabel** in the IPAM deployment manifest
     - --ip-range='{"dev":"10.192.75.113-10.192.75.116"}'
@@ -266,7 +266,7 @@ kubectl create -f f5-ipam-deployment.yaml
 dev-cluster
 * f5-ipam-deployment [repo](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/dev-cluster/ipam/f5-ipam-deployment.yaml)
 
-f5-ipam-deployment
+prod-cluster
 * f5-cis-deployment.yaml [repo](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/prod-cluster/ipam/f5-ipam-deployment.yaml)
 
 ## Configuring CIS CRD for the Dev Cluster based on the Hostname
