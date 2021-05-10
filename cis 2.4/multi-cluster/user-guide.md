@@ -121,7 +121,6 @@ HC Outgoing Octets                              0
 HC Outgoing Unicast Packets                     0
 HC Outgoing Multicast Packets                   0
 HC Outgoing Broadcast Packets                   0
-
 ```
 
 ```
@@ -146,9 +145,6 @@ HC Outgoing Octets                              0
 HC Outgoing Unicast Packets                     0
 HC Outgoing Multicast Packets                   0
 HC Outgoing Broadcast Packets                   0
-
-root@(big-ip-ve6-pme)(cfg-sync Standalone)(Active)(/Common)(tmos)#
-
 ```
 
 ### Create two “dummy” Kubernetes Node for Tunnel: vxlan-tunnel-dev and vxlan-tunnel-prod
@@ -191,10 +187,11 @@ spec:
   podCIDR: "10.245.20.0/24"
 ```
 
-**Note: Second node create a unique podCIDR**
+dev-cluster
+* f5-bigip-dev-node.yaml [repo](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/dev-cluster/cis/cis-deployment/f5-bigip-dev-node.yaml)
 
-* f5-bigip-node-91.yaml [repo](https://github.com/mdditt2000/kubernetes-1-20/blob/main/cis%202.4/ha-cluster/big-ip-91/f5-bigip-node-91.yaml)
-* f5-bigip-node-92.yaml [repo](https://github.com/mdditt2000/kubernetes-1-20/blob/main/cis%202.4/ha-cluster/big-ip-92/f5-bigip-node-92.yaml)
+prod-cluster
+* f5-bigip-prod-node.yaml [repo](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/prod-cluster/cis/cis-deployment/f5-bigip-prod-node.yaml)
 
 
 ## Deploy CIS for each BIG-IP for dev-cluster and prod-cluster
@@ -241,61 +238,7 @@ Configuration options available in the CIS controller
 ```
 
 dev-cluster
-* f5-bigip-ctlr-deployment-91.yaml [repo](https://github.com/mdditt2000/kubernetes-1-20/blob/main/cis%202.4/ha-cluster/big-ip-91/f5-bigip-ctlr-deployment-91.yaml)
+* f5-cis-deployment.yaml [repo](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/dev-cluster/cis/cis-deployment/f5-cis-deployment.yaml)
 
 prod-cluster
-* f5-bigip-ctlr-deployment-92.yaml [repo](https://github.com/mdditt2000/kubernetes-1-20/blob/main/cis%202.4/ha-cluster/big-ip-92/f5-bigip-ctlr-deployment-92.yaml)
-
-Flannel changes
-
-```
-Changes required in k8s v1.20 setup for modifying VNI 11 and also vxlan subnet :
- 
-1. Modify in flannel-kube-cfg configmap file the vlxan subnet and also VNI.
-apiVersion: v1
-data:
-cni-conf.json: |
-{
-"name": "cbr0",
-"cniVersion": "0.3.1",
-"plugins": [
-{
-"type": "flannel",
-"delegate": {
-"hairpinMode": true,
-"isDefaultGateway": true
-}
-},
-{
-"type": "portmap",
-"capabilities": {
-"portMappings": true
-}
-}
-]
-}
-net-conf.json: |
-{
-"Network": "10.245.0.0/16",
-"Backend": {
-"Type": "vxlan",
-"VNI": 11
-}
-}
-kind: ConfigMap
-kind: ConfigMap
-metadata:
-annotations:
-labels:
-app: flannel
-tier: node
-name: kube-flannel-cfg
-namespace: kube-system
-resourceVersion: "79463"
-uid: 0d3daba1-4db8-44b7-80e0-c73965977035
-
-
-2. Modify in all nodes (kubectl edit node ) with VNI 11 from VNI 1 including BIGIP node.
-3. Try restarting the flannel pods in kube-system. If doesn’t work.
-4. Reboot the cluster. This should bringup the cluster with necessary VNI and network change.
-```
+* f5-cis-deployment.yaml [repo](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/prod-cluster/cis/cis-deployment/f5-cis-deployment.yaml)
