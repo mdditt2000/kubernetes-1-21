@@ -13,9 +13,10 @@ Demo on YouTube [video](https://www.youtube.com/)
 ### Environment parameters
 
 * Two K8S 1.21 cluster - one master and two worker nodes
-* CIS 2.4.0
-* AS3: 3.26
-* BIG-IP 15.1
+* Recommend AS3 version 3.26 [repo](https://github.com/F5Networks/f5-appsvcs-extension/releases/tag/v3.26.0)
+* CIS 2.4 [repo](https://github.com/F5Networks/k8s-bigip-ctlr/releases/tag/v2.4.0)
+* F5 IPAM Controller [repo](https://github.com/F5Networks/f5-ipam-controller/releases/tag/v0.1.2)
+* CloudDocs [documentation](https://clouddocs.f5.com/containers/latest/userguide/kubernetes/)
 
 ## Kubernetes Flannel Modification
 
@@ -242,3 +243,29 @@ dev-cluster
 
 prod-cluster
 * f5-cis-deployment.yaml [repo](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/prod-cluster/cis/cis-deployment/f5-cis-deployment.yaml)
+
+## CIS Configuration Options using IPAM for the Dev and Prod Cluster
+
+CIS 2.4 introduces IPAM which provides IP management for the different clusters. Using CIS + IPAM will simplify the configuration of the CRD Virtual Server. The devops user only need to define a ipamlable in the CRD and IPAM will provide a public IP for the specific hostname. 
+
+* Defining the ip-range for the **dev network** and **dev ipamlabel** in the IPAM deployment manifest
+    - --ip-range='{"dev":"10.192.75.113-10.192.75.116"}'
+
+* Defining the ip-range for the **prod network** and **dev ipamlabel** in the IPAM deployment manifest
+    - --ip-range='{"prod":"10.192.125.30-10.192.125.50"}'
+
+Deploy RBAC, schema and F5 IPAM Controller deployment for both the dev and prod cluster
+
+```
+kubectl create -f f5-ipam-rbac.yaml
+kubectl create -f f5-ipam-schema.yaml
+kubectl create -f f5-ipam-deployment.yaml
+```
+
+dev-cluster
+* f5-ipam-deployment [repo](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/dev-cluster/ipam/f5-ipam-deployment.yaml)
+
+f5-ipam-deployment
+* f5-cis-deployment.yaml [repo](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/prod-cluster/ipam/f5-ipam-deployment.yaml)
+
+**Note** For more information on F5 CIS and IPAM please review my user-guide and demo at [repo](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/ipam/README.md)
