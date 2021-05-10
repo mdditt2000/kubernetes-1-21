@@ -8,7 +8,7 @@ In this user-guide, each cluster runs a full copy of the application. This simpl
 
 ![diagram](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/diagrams/2021-05-10_12-07-00.png)
 
-Demo on YouTube [video](https://www.youtube.com/)
+Demo on YouTube [video](https://youtu.be/VimGK5PPViE)
 
 ### Environment parameters
 
