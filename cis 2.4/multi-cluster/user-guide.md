@@ -4,7 +4,7 @@ Today, organizations are increasingly deploying multiple Kubernetes clusters. De
 
 ## Multi-Cluster Application Architecture
 
-In this user-guide, each cluster runs a full copy of the application. This simple but powerful approach enables an application to be graduated from dev to prod. Future user-guides will focus on multiple availability zones using health-aware global load balancing. Diagram below represents the two cluster in the user-guide. 
+In this user-guide, each cluster runs a full copy of the application. This simple but powerful approach enables an application to be graduated from dev to prod. Future user-guides will focus on multiple availability zones using health-aware global load balancing. Diagram below represents the two clusters in the user-guide. 
 
 ![diagram](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/diagrams/2021-05-10_12-07-00.png)
 
@@ -12,7 +12,7 @@ Demo on YouTube [video](https://www.youtube.com/)
 
 ### Environment parameters
 
-* Two K8S 1.21 cluster - one master and two worker nodes
+* Two clusters - one master and two worker nodes running version 1.21
 * Recommend AS3 version 3.26 [repo](https://github.com/F5Networks/f5-appsvcs-extension/releases/tag/v3.26.0)
 * CIS 2.4 [repo](https://github.com/F5Networks/k8s-bigip-ctlr/releases/tag/v2.4.0)
 * F5 IPAM Controller [repo](https://github.com/F5Networks/f5-ipam-controller/releases/tag/v0.1.2)
@@ -20,7 +20,7 @@ Demo on YouTube [video](https://www.youtube.com/)
 
 ## Kubernetes Flannel Modification
 
-Changes are required to the CIDR network flannel on running Kubernetes cluster. Assuming that you have installed a fresh Kubernetes cluster via kubeadm builder tool with adopting appropriate --pod-network-cidr flag in kubeadm init command shown below:
+Changes are required to flannel networking in both the Kubernetes cluster and BIG-IP. These changes are mostly required to the second cluster. Assuming that you have installed a fresh Kubernetes cluster via kubeadm builder tool with adopting appropriate --pod-network-cidr flag in kubeadm init command shown below:
 
 ```
 kubeadm init --apiserver-advertise-address=192.168.200.70 --pod-network-cidr=10.244.0.0/16
