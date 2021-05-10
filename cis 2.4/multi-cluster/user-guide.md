@@ -40,7 +40,7 @@ net - conf.json: | {
 	}
 }
 ```
-Output should look like the example below for the prod cluster
+Output should look like the example below for the prod-cluster
 
 ```
 [kube@ks8-prod-master pod-deployment]$ cat /run/flannel/subnet.env
@@ -49,7 +49,7 @@ FLANNEL_SUBNET=10.245.0.1/24
 FLANNEL_MTU=1450
 FLANNEL_IPMASQ=true
 ```
-Changes are also required to all the backend-data annotations of the Kubenetes nodes in the cluster. This includes the big-ip-node documented below
+Changes are also required to all the backend-data annotations of the Kubenetes nodes in the prod-cluster. This includes the big-ip-node documented below
 
     $ kubectl edit nodes
 
