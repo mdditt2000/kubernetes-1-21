@@ -197,7 +197,7 @@ prod-cluster
 
 ## Deploy CIS for each BIG-IP for dev-cluster and prod-cluster
 
-Configuration options available in the CIS controller
+Configuration options available in the CIS controller for the dev-cluster
 ```
     spec: 
       containers: 
@@ -215,9 +215,10 @@ Configuration options available in the CIS controller
             - "--log-as3-response=true"
             - "--custom-resource-mode=true"
             - "--ipam=true"
+            - "--as3-post-delay=30"
 ```
 
-Configuration options available in the CIS controller
+Configuration options available in the CIS controller for the prod-cluster
 ```
     spec: 
       containers: 
@@ -235,7 +236,7 @@ Configuration options available in the CIS controller
             - "--log-as3-response=true"
             - "--custom-resource-mode=true"
             - "--ipam=true"
-          command: 
+            - "--as3-post-delay=30"
 ```
 
 dev-cluster
@@ -246,7 +247,7 @@ prod-cluster
 
 ## CIS Configuration Options using IPAM for the Dev and Prod Cluster
 
-CIS 2.4 introduces IPAM which provides IP management for the different clusters. Using CIS + IPAM will simplify the configuration of the CRD Virtual Server. The devops user only need to define a ipamlable in the CRD and IPAM will provide a public IP for the specific hostname. 
+CIS 2.4 introduces IPAM which provides IP management for the different clusters. Using CIS + IPAM will simplify the configuration of the CRD VirtualServer. The devops user only need to define a ipamlable in the CRD and IPAM will provide a public IP for the specific hostname. 
 
 * Defining the ip-range for the **dev network** and **dev ipamlabel** in the IPAM deployment manifest
     - --ip-range='{"dev":"10.192.75.113-10.192.75.116"}'
