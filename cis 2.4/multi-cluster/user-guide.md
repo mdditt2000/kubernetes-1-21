@@ -268,4 +268,81 @@ dev-cluster
 f5-ipam-deployment
 * f5-cis-deployment.yaml [repo](https://github.com/mdditt2000/kubernetes-1-21/blob/main/cis%202.4/multi-cluster/prod-cluster/ipam/f5-ipam-deployment.yaml)
 
+## Configuring CIS CRD for the Dev Cluster based on the Hostname
+
+- hostname "dev.f5demo.com"
+
+Dev user only needs to specify the **ipamLabel: dev** and **host: dev.f5demo.com** is the CRD
+
+```
+apiVersion: "cis.f5.com/v1"
+kind: VirtualServer
+metadata:
+  name: f5-demo-dev
+  namespace: dev
+  labels:
+    f5cr: "true"
+spec:
+  host: dev.f5demo.com
+  ipamLabel: dev
+  pools:
+  - monitor:
+      interval: 20
+      recv: ""
+      send: /
+      timeout: 31
+      type: http
+    path: /
+    service: f5-demo-dev
+    servicePort: 80
+```
+
+### Deploy the CRD and CRD schema
+
+```
+kubectl create -f customresourcedefinitions.yaml
+kubectl create -f vs-dev.yaml
+```
+
+crd-resource [repo](https://github.com/mdditt2000/kubernetes-1-21/tree/main/cis%202.4/multi-cluster/dev-cluster/cis/crd-resource)
+
+## Configuring CIS CRD for the Prod Cluster based on the Hostname
+
+- hostname "prod.f5demo.com"
+
+Dev user only needs to specify the **ipamLabel: prod** and **host: prod.f5demo.com** is the CRD
+
+```
+apiVersion: "cis.f5.com/v1"
+kind: VirtualServer
+metadata:
+  name: f5-demo-prod
+  namespace: prod
+  labels:
+    f5cr: "true"
+spec:
+  host: prod.f5demo.com
+  ipamLabel: prod
+  pools:
+  - monitor:
+      interval: 20
+      recv: ""
+      send: /
+      timeout: 31
+      type: http
+    path: /
+    service: f5-demo-prod
+    servicePort: 80
+```
+
+### Deploy the CRD and CRD schema
+
+```
+kubectl create -f customresourcedefinitions.yaml
+kubectl create -f vs-prod.yaml
+```
+
+crd-resource [repo](https://github.com/mdditt2000/kubernetes-1-21/tree/main/cis%202.4/multi-cluster/prod-cluster/cis/crd-resource)
+
 **Note** For more information on F5 CIS and IPAM please review my user-guide and demo at [repo](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/ipam/README.md)
+
