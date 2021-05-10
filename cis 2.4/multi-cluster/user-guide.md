@@ -20,14 +20,14 @@ Demo on YouTube [video](https://www.youtube.com/)
 
 ## Kubernetes Flannel Modification
 
-Changes are required to flannel networking in both the Kubernetes cluster and BIG-IP. These changes are mostly required to the second cluster. Assuming that you have installed a fresh Kubernetes cluster via kubeadm builder tool with adopting appropriate --pod-network-cidr flag in kubeadm init command shown below:
+Changes are required to flannel networking in both the Kubernetes cluster and BIG-IP. These changes are mostly required to the prod-cluster. Assuming that you have installed a fresh Kubernetes cluster via kubeadm builder tool with adopting appropriate --pod-network-cidr flag in kubeadm init command shown below:
 
 ```
 kubeadm init --apiserver-advertise-address=192.168.200.70 --pod-network-cidr=10.244.0.0/16
 kubeadm init --apiserver-advertise-address=192.168.200.80 --pod-network-cidr=10.245.0.0/16
 ```
 
-**Note:** A workaround is to edit the ConfigMap file of flannel, kube-flannel-cfg and to replace with the new Network value. Cluster reboot is required. Replace and add the "Network", "VNI" fields under net-conf.json header in the relevant Flannel ConfigMap with a new network IP range:
+**Note:** A workaround is to edit the prod-cluster ConfigMap file of flannel, kube-flannel-cfg and to replace with the new Network value. By default kubeadm uses "Network": "10.244.0.0/16". Replace and add the "Network", "VNI" fields under net-conf.json header in the relevant Flannel ConfigMap with a new network IP range. After modification a reboot of the cluster is required.
 
     $ kubectl edit cm kube-flannel-cfg -n kube-system
 
