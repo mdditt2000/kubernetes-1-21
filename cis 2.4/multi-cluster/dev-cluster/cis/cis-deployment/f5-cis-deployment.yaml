@@ -40,6 +40,7 @@ spec:
             - "--log-as3-response=true"
             - "--custom-resource-mode=true"
             - "--ipam=true"
+            - "--as3-post-delay=30"
           command: 
             - /app/bin/k8s-bigip-ctlr
           env: 

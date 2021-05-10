@@ -346,3 +346,34 @@ crd-resource [repo](https://github.com/mdditt2000/kubernetes-1-21/tree/main/cis%
 
 **Note** For more information on F5 CIS and IPAM please review my user-guide and demo at [repo](https://github.com/mdditt2000/k8s-bigip-ctlr/blob/main/user_guides/ipam/README.md)
 
+## Best Practices when using Multiple Kubernetes Clusters and CIS
+
+API scaling is required when using multiple instances of CIS connecting to a single BIG-IP device. In this user-guide, two Kubernetes clusters are targeting a single BIG-IP device. This solution is to modify the settings on both the BIG-IP and CIS to reduce the risk of AS3 errors related to API connections. 
+
+CIS uses the AS3 API to configure BIG-IP. The challenge is if multiple AS3 declaration declare a configuration simultaneously or if the API is busy, CIS could receive a 503 response. If you start to see this error message stating **“Error: Configuration operation in progress on device, please try again in 2 minutes.”**, CIS needs to implement API POST delays.
+
+### Recommended Settings
+
+The following are the recommended configuration to implement API POST delays:
+
+```
+          args: 
+            - "--bigip-username=$(BIGIP_USERNAME)"
+            - "--bigip-password=$(BIGIP_PASSWORD)"
+            - "--bigip-url=192.168.200.60"
+            - "--bigip-partition=dev"
+            - "--namespace=dev"
+            - "--pool-member-type=cluster"
+            - "--flannel-name=/dev/vxlan-tunnel-dev"
+            - "--log-level=DEBUG"
+            - "--insecure=true"
+            - "--log-as3-response=true"
+            - "--custom-resource-mode=true"
+            - "--ipam=true"
+            - "--as3-post-delay=30"
+```
+
+
+
+
+
