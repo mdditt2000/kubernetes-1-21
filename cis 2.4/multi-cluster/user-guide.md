@@ -373,7 +373,7 @@ The following are the recommended configuration to implement API POST delays:
             - "--as3-post-delay=30"
 ```
 
-
+The "as3-post-delay" value changes the behavior of the controller to wait for 30 seconds before making a change. This can queue up changes and perform them as a single update instead of multiple. The --as3-post-delay=30 can be customized for the Kubernetes cluster. In this example i am using 30 seconds.
 
 
 
