@@ -56,6 +56,6 @@ spec:
                 secretKeyRef: 
                   key: password
                   name: bigip-login
-          image: "f5networks/k8s-bigip-ctlr:2.4.0"
+          image: "quay.io/f5networks/k8s-bigip-ctlr-devel:21cfa8939e9680e18fc2f1f82dfb74930eda2da0"
           name: f5-server
       serviceAccountName: k8s-bigip-ctlr
