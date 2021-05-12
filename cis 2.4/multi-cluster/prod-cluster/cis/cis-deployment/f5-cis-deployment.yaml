@@ -28,13 +28,16 @@ spec:
       containers: 
         - 
           args: 
+            - "--gtm-bigip-username=$(BIGIP_USERNAME)"
+            - "--gtm-bigip-password=$(BIGIP_PASSWORD)"
+            - "--gtm-bigip-url=192.168.200.60"
             - "--bigip-username=$(BIGIP_USERNAME)"
             - "--bigip-password=$(BIGIP_PASSWORD)"
             - "--bigip-url=192.168.200.60"
-            - "--bigip-partition=prod"
-            - "--namespace=prod"
+            - "--bigip-partition=dev"
+            - "--namespace=dev"
             - "--pool-member-type=cluster"
-            - "--flannel-name=/prod/vxlan-tunnel-prod"
+            - "--flannel-name=/dev/vxlan-tunnel-dev"
             - "--log-level=DEBUG"
             - "--insecure=true"
             - "--log-as3-response=true"
