@@ -6,8 +6,9 @@ metadata:
   labels:
     f5cr: "true"
 spec:
-  host: dev.f5demo.com
-  ipamLabel: dev
+  host: f5demo.com
+  virtualServerAddress: "10.192.75.113"
+  virtualServerHTTPPort: 80
   pools:
   - monitor:
       interval: 20

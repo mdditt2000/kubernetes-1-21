@@ -42,7 +42,6 @@ spec:
             - "--insecure=true"
             - "--log-as3-response=true"
             - "--custom-resource-mode=true"
-            - "--ipam=true"
           command: 
             - /app/bin/k8s-bigip-ctlr
           env: 
