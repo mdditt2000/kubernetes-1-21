@@ -1,0 +1,93 @@
+{
+    "$schema": "https://raw.githubusercontent.com/F5Networks/f5-appsvcs-extension/master/schema/latest/as3-schema.json",
+    "class": "AS3",
+    "declaration": {
+        "class": "ADC",
+        "schemaVersion": "3.6.0",
+        "id": "edns-as3-example",
+        "Common": {
+            "class": "Tenant",
+            "Shared": {
+                "class": "Application",
+                "template": "shared",
+                "k8s-multi-cluster": {
+                    "class": "GSLB_Data_Center"
+                },
+                "big-ip-ve6-pme": {
+                    "class": "GSLB_Server",
+                    "serverType": "generic-host",
+                    "enabled": true,
+                    "dataCenter": {
+                        "use": "k8s-multi-cluster"
+                    },
+                    "devices": [
+                        {
+                            "address": "10.192.125.60"
+                        }
+                    ],
+                    "virtualServers": [
+                        {
+                            "address": "10.192.75.113",
+                            "port": 80
+                        }
+                    ],
+                    "monitors": [
+                        {
+                            "bigip": "/Common/https"
+                        }
+                    ]
+                },
+                "gtm-ve6-pme": {
+                    "class": "GSLB_Server",
+                    "serverType": "bigip",
+                    "enabled": true,
+                    "dataCenter": {
+                        "use": "k8s-multi-cluster"
+                    },
+                    "devices": [
+                        {
+                            "address": "10.192.125.60"
+                        }
+                    ],
+                    "monitors": [
+                        {
+                            "bigip": "/Common/http"
+                        }
+                    ]
+                },
+                "k8s-multi-cluster-probe": {
+                    "class": "GSLB_Prober_Pool",
+                    "lbMode": "global-availability",
+                    "members": [
+
+                    ]
+                },
+                "dev_http": {
+                    "class": "GSLB_Monitor",
+                    "monitorType": "http",
+                    "receive": "",
+                    "send": "GET / HTTP/1.1/\r/\nHost: dev.f5demo.com/\r/\nConnection: Close/\r/\n/\r/\n"
+                },
+                "controller_a": {
+                    "class": "GSLB_Domain",
+                    "domainName": "controller.example.com",
+                    "resourceRecordType": "A",
+                    "poolLbMode": "topology",
+                    "pools": [
+                        {
+                            "use": "controller"
+                        }
+                    ]
+                },
+                "controller": {
+                    "class": "GSLB_Pool",
+                    "enabled": true,
+                    "resourceRecordType": "A",
+                    "lbModePreferred": "round-robin",
+                    "lbModeFallback": "fallback-ip",
+                    "fallbackIP": "10.192.125.60"
+                }
+            }
+        }
+    }
+}
