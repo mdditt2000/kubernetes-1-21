@@ -5,26 +5,26 @@
         "class": "ADC",
         "schemaVersion": "3.6.0",
         "id": "GSLB_Sample",
-        "DNS": {
+        "DNS2": {
             "class": "Tenant",
             "CAFE_EXAMPLE": {
                 "class": "Application",
                 "template": "generic",
-                "WIP_CAFE_EXAMPLE_COM": {
+                "WIP2_CAFE_EXAMPLE_COM": {
                     "class": "GSLB_Domain",
-                    "domainName": "cafe.example.com",
+                    "domainName": "cafe2.example.com",
                     "resourceRecordType": "A",
                     "poolLbMode": "topology",
                     "pools": [
                         {
-                            "use": "CAFE_EXAMPLE_COM_EAST"
+                            "use": "CAFE2_EXAMPLE_COM_EAST"
                         },
                         {
-                            "use": "CAFE_EXAMPLE_COM_WEST"
+                            "use": "CAFE2_EXAMPLE_COM_WEST"
                         }
                     ]
                 },
-                "CAFE_EXAMPLE_COM_EAST": {
+                "CAFE2_EXAMPLE_COM_EAST": {
                     "class": "GSLB_Pool",
                     "enabled": true,
                     "resourceRecordType": "A",
@@ -54,7 +54,7 @@
                         }
                     ]
                 },
-                "CAFE_EXAMPLE_COM_WEST": {
+                "CAFE2_EXAMPLE_COM_WEST": {
                     "class": "GSLB_Pool",
                     "enabled": true,
                     "resourceRecordType": "A",
@@ -107,214 +107,6 @@
                     "monitorType": "https",
                     "receive": "",
                     "send": "GET /coffee HTTP/1.1/\r/\nHost: cafe.example.com/\r/\nConnection: Close/\r/\n/\r/\n"
-                }
-            }
-        },
-        "Common": {
-            "class": "Tenant",
-            "Shared": {
-                "class": "Application",
-                "template": "shared",
-                "EAST": {
-                    "class": "GSLB_Data_Center"
-                },
-                "WEST": {
-                    "class": "GSLB_Data_Center"
-                },
-                "LTM_EAST_01": {
-                    "class": "GSLB_Server",
-                    "serverType": "generic-host",
-                    "enabled": true,
-                    "dataCenter": {
-                        "use": "EAST"
-                    },
-                    "devices": [
-                        {
-                            "address": "52.252.76.193"
-                        }
-                    ],
-                    "virtualServers": [
-                        {
-                            "address": "52.252.75.112",
-                            "port": 80
-                        }
-                    ],
-                    "monitors": [
-                        {
-                            "bigip": "/Common/https"
-                        }
-                    ]
-                },
-                "LTM_EAST_02": {
-                    "class": "GSLB_Server",
-                    "serverType": "generic-host",
-                    "enabled": true,
-                    "dataCenter": {
-                        "use": "EAST"
-                    },
-                    "devices": [
-                        {
-                            "address": "52.252.77.209"
-                        }
-                    ],
-                    "virtualServers": [
-                        {
-                            "address": "52.252.75.211",
-                            "port": 80
-                        }
-                    ],
-                    "monitors": [
-                        {
-                            "bigip": "/Common/https"
-                        }
-                    ]
-                },
-                "LTM_WEST_01": {
-                    "class": "GSLB_Server",
-                    "serverType": "bigip",
-                    "enabled": true,
-                    "dataCenter": {
-                        "use": "WEST"
-                    },
-                    "devices": [
-                        {
-                            "address": "20.69.144.127"
-                        }
-                    ],
-                    "virtualServers": [
-                        {
-                            "address": "20.69.146.253",
-                            "port": 80
-                        }
-                    ],
-                    "monitors": [
-                        {
-                            "bigip": "/Common/https"
-                        }
-                    ]
-                },
-                "LTM_WEST_02": {
-                    "class": "GSLB_Server",
-                    "serverType": "bigip",
-                    "enabled": true,
-                    "dataCenter": {
-                        "use": "WEST"
-                    },
-                    "devices": [
-                        {
-                            "address": "20.69.146.35"
-                        }
-                    ],
-                    "virtualServers": [
-                        {
-                            "address": "20.80.136.224",
-                            "port": 80
-                        }
-                    ],
-                    "monitors": [
-                        {
-                            "bigip": "/Common/https"
-                        }
-                    ]
-                },
-                "GTM_WEST_01": {
-                    "class": "GSLB_Server",
-                    "serverType": "bigip",
-                    "enabled": true,
-                    "dataCenter": {
-                        "use": "WEST"
-                    },
-                    "devices": [
-                        {
-                            "address": "192.168.0.6"
-                        },
-                        {
-                            "address": "20.80.137.45"
-                        }
-                    ],
-                    "monitors": [
-                        {
-                            "bigip": "/Common/https"
-                        }
-                    ]
-                },
-                "GTM_EAST_01": {
-                    "class": "GSLB_Server",
-                    "serverType": "bigip",
-                    "enabled": true,
-                    "dataCenter": {
-                        "use": "EAST"
-                    },
-                    "devices": [
-                        {
-                            "address": "192.168.0.4"
-                        },
-                        {
-                            "address": "52.252.75.102"
-                        }
-                    ],
-                    "monitors": [
-                        {
-                            "bigip": "/Common/https"
-                        }
-                    ]
-                },
-                "WEST_PROBE": {
-                    "class": "GSLB_Prober_Pool",
-                    "lbMode": "global-availability",
-                    "members": [
-
-                    ]
-                },
-                "EAST_PROBE": {
-                  "class": "GSLB_Prober_Pool",
-                  "lbMode": "global-availability",
-                  "members": [
-
-                  ]
-              },
-                "tea_http": {
-                    "class": "GSLB_Monitor",
-                    "monitorType": "http",
-                    "receive": "",
-                    "send": "GET /tea HTTP/1.1/\r/\nHost: cafe.example.com/\r/\nConnection: Close/\r/\n/\r/\n"
-                },
-                "tea_https": {
-                    "class": "GSLB_Monitor",
-                    "monitorType": "https",
-                    "receive": "",
-                    "send": "GET /tea HTTP/1.1/\r/\nHost: cafe.example.com/\r/\nConnection: Close/\r/\n/\r/\n"
-                },
-                "coffee_http": {
-                    "class": "GSLB_Monitor",
-                    "monitorType": "http",
-                    "receive": "",
-                    "send": "GET /coffee HTTP/1.1/\r/\nHost: cafe.example.com/\r/\nConnection: Close/\r/\n/\r/\n"
-                },
-                "coffee_https": {
-                    "class": "GSLB_Monitor",
-                    "monitorType": "https",
-                    "receive": "",
-                    "send": "GET /coffee HTTP/1.1/\r/\nHost: cafe.example.com/\r/\nConnection: Close/\r/\n/\r/\n"
-                },
-                "controller_a": {
-                    "class": "GSLB_Domain",
-                    "domainName": "controller.example.com",
-                    "resourceRecordType": "A",
-                    "poolLbMode": "topology",
-                    "pools": [
-                        {
-                            "use": "controller"
-                        }
-                    ]
-                },
-                "controller": {
-                    "class": "GSLB_Pool",
-                    "enabled": true,
-                    "resourceRecordType": "A",
-                    "lbModePreferred": "round-robin",
-                    "lbModeFallback": "fallback-ip",
-                    "fallbackIP": "192.168.1.10"
                 }
             }
         }
